@@ -13,7 +13,7 @@ int main() {
     double arr[] = { 1, 20, 38, 90, 100, 110, 1029 };
     int hi = sizeof(arr) / sizeof(arr[0]);
 
-    const int targetIdx = binarySearchRec(arr, 0, hi, target);
+    const int targetIdx = binarySearchRec(arr, 0, hi - 1, target);
 
 
     printArr(arr, hi);
