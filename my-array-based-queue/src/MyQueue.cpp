@@ -69,6 +69,12 @@ bool MyQueue::contains(const double element) const {
     return false;
 }
 
+
+bool MyQueue::isEmpty() const {
+    return (this->size <= 0);
+}
+
+
 void MyQueue::printQueue() const {
 
     // Define the separator

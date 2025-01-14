@@ -29,8 +29,7 @@ public:
     void dequeue();
     double peek() const;
     bool contains(const double element) const;
-    void removal(const double element);
-    bool isEmpty(const double element);
+    bool isEmpty() const;
 
     void printQueue() const;
 };
