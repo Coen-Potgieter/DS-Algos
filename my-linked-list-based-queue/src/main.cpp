@@ -15,7 +15,7 @@ int main() {
 
 int testMyQueue() {
 
-    MyQueue myQueue(5);
+    MyQueue myQueue;
 
     // Test enqueue & peek
     myQueue.enqueue(1.3);
@@ -24,8 +24,7 @@ int testMyQueue() {
     myQueue.printQueue();
     std::cout << "First Element: " << myQueue.peek() << std::endl << std::endl;
 
-    // Test dequeue and circular enqueue
-    myQueue.dequeue();
+    // Test dequeue 
     myQueue.dequeue();
     myQueue.dequeue();
     myQueue.enqueue(5.6);
@@ -34,6 +33,7 @@ int testMyQueue() {
     myQueue.printQueue();
 
     // empty queue and test: isEmptyChecks & error checks
+    myQueue.dequeue();
     myQueue.dequeue();
     myQueue.dequeue();
     myQueue.dequeue();
@@ -46,29 +46,29 @@ int testMyQueue() {
         myQueue.dequeue();
         std::cerr << "Did not catch dequeue empty queue error..." << std::endl;
         return 1;
+    } catch(const std::exception& e) {
+        std::cout << "Successfully caught dequeue error: " << e.what() << std::endl;
+    }
+    try {
         myQueue.peek();
         std::cerr << "Did not catch dequeue empty queue error..." << std::endl;
         return 1;
     } catch(const std::exception& e) {
-        std::cout << "Successfully caught error: " << e.what() << std::endl;
+        std::cout << "Successfully caught peek error: " << e.what() << std::endl;
     }
+
     std::cout << std::endl;
 
-    // Fill queue and catch full queue error, then test `contains` method
+    // populate queue and test `contains` method
     myQueue.enqueue(0.34);
     myQueue.enqueue(1);
     myQueue.enqueue(1);
     myQueue.enqueue(1);
     myQueue.enqueue(1);
+    myQueue.enqueue(10.4);
     myQueue.printQueue();
 
-    try {
-        myQueue.enqueue(0.123);
-        std::cerr << "Did not catch enqueue full queue error..." << std::endl;
-        return 1;
-    } catch(const std::exception& e) {
-        std::cout << "Successfully caught error: " << e.what() << std::endl;
-    }
+
 
     thingToPrint = (myQueue.contains(0.34)) ? "Queue Contains 0.34" : "Queue Does Not Contain 0.34";
     std::cout << thingToPrint << std::endl;
@@ -76,14 +76,7 @@ int testMyQueue() {
     thingToPrint = (myQueue.contains(10.4)) ? "Queue Contains 10.4" : "Queue Does Not Contain 10.4";
     std::cout << thingToPrint << std::endl;
 
-
-    std::cout << std::endl;
-    // Final Test: Ensure dequeue looping works
-    myQueue.dequeue();
-    myQueue.dequeue();
-    myQueue.dequeue();
-    myQueue.dequeue();
-    myQueue.dequeue();
-    myQueue.printQueue();
+    thingToPrint = (myQueue.contains(12.67)) ? "Queue Contains 12.67" : "Queue Does Not Contain 12.67";
+    std::cout << thingToPrint << std::endl;
     return 0;
 }
