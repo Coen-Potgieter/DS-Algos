@@ -1,4 +1,5 @@
 
+#include <algorithm>
 #include <climits>
 #include <iostream>
 #include <vector>
@@ -76,5 +77,5 @@ int variableSizeSlidingWindow(const std::vector<int>& nums, const int s) {
             start ++;
         }
     }
-    return minLength;
+    return (minLength == INT_MAX) ? 0 : minLength;
 }
