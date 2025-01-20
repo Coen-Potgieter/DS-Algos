@@ -1,15 +1,15 @@
 
 #include "BST.h"
 
-void BST::deleteTree(Node* root) {
-    if (!root) {
+void BST::deleteTree(Node* node) {
+    if (!node) {
         return;
     }
 
-    this->deleteTree(root->left);
-    this->deleteTree(root->right);
+    this->deleteTree(node->left);
+    this->deleteTree(node->right);
 
-    delete root;
+    delete node;
 }
 
 BST::Node* BST::add(Node* node, const double& element) {
@@ -66,46 +66,105 @@ BST::Node* BST::search(Node* node, const double& element) const {
     if (element == node->data) {
         return node;
     } else if (element < node->data) {
-        return node->left;
+        return this->search(node->left, element);
     } else {
-        return node->right;
+        return this->search(node->right, element);
     }
 }
 
-void BST::printTree() const {
 
-    if (!this->root) {
-        std::cout << "BST is empty" << std::endl;
-        return;
+BST::Node* BST::findMax(Node* startingNode) const {
+    BST::Node* trav = startingNode;
+    while (trav->right) {
+        trav = trav->right;
     }
-
-    std::queue<Node*> q;
-    q.push(this->root);
-    int nodeIdx = 0;
-
-    while (!q.empty()) {
-
-        Node* currNode = q.front();
-        q.pop();
-
-        std::cout << "Node #" << nodeIdx << ": " << std::endl;
-        std::cout << "\tAddress: " << currNode << ": " << std::endl;
-        std::cout << "\tData: " << currNode->data << std::endl;
-        std::cout << "\tLeft: " << currNode->left << std::endl;
-        std::cout << "\tRight: " << currNode->right << std::endl;
-
-        if (currNode->left) {
-            q.push(currNode->left);
-        }
-        if (currNode->right) {
-            q.push(currNode->right);
-        }
-        nodeIdx += 1;
-    }
-    std::cout << std::endl;
+    return trav;
+}
+double BST::returnMaxVal() const {
+    BST::Node* maxNode = this->findMax(this->root);
+    return maxNode->data;
 }
 
 
+BST::Node* BST::findMin(Node* startingNode) const {
+    BST::Node* trav = startingNode;
+    while (trav->left) {
+        trav = trav->left;
+    }
+    return trav;
+}
+double BST::returnMinVal() const {
+    BST::Node* maxNode = this->findMin(this->root);
+    return maxNode->data;
+}
+
+BST::Node* BST::remove(Node* node, const double& element) {
+
+    // Navigate
+    if (element < node->data) {
+        node->left = this->remove(node->left, element);
+    } else if (element > node->data) {
+        node->right = this->remove(node->right, element);
+    } else {
+        // We have now found our target node
+
+        //  - Case 1
+        if ((!node->left) && (!node->right)) {
+            // Return nullptr after deleting the node
+            delete node;
+            node = nullptr;
+        }
+
+        // - Case 2
+        else if ((!node->left)) {
+            // Return the node's right subtree after deleting it 
+            BST::Node* tmp = node;
+            node = node->right;
+            delete tmp;
+        }
+
+        // - Case 3
+        else if ((!node->right)) {
+            // Return the node's left subtree after deleting it 
+            BST::Node* tmp = node;
+            node = node->left;
+            delete tmp;
+        }
+
+        // - Case 4: 
+        else {
+            // Find Either (Largest node in Left subtree || Smallest node in Right subtree)
+
+            // 1. Find Largest in left subtree
+            /* BST::Node* tmp = this->findMax(node->left); */
+            /* node->data = tmp->data; */
+            /* node->left = this->remove(node->left, node->data); */
+
+            // 2. Find Smallest in right subtree
+            BST::Node* tmp = this->findMin(node->right);
+            node->data = tmp->data;
+            node->right = this->remove(node->right, node->data);
+        }
+    }
+    return node;
+}
+
+bool BST::remove(const double& element) {
+
+    // Only call remove method if the element exists in our BST
+    if (!this->contains(this->root, element)) {
+        return false;
+    }
+
+    // Assign the returned node to root
+    this->root = this->remove(this->root, element);
+    this->size -= 1;
+    return true;
+}
+
+void BST::printTraversal(BST::TRAVERSAL traverseOption) const {
+
+}
 
 
 
