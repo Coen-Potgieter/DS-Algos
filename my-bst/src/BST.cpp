@@ -31,6 +31,8 @@ BST::Node* BST::add(Node* node, const double& element) {
 
 BST::~BST() {
     this->deleteTree(this->root);
+    this->root = nullptr;
+    this->size = 0;
 }
 
 void BST::insert(const double& element) {
@@ -162,10 +164,105 @@ bool BST::remove(const double& element) {
     return true;
 }
 
+
+
+void BST::printPreorder(Node* node) const {
+    if (!node) return;
+
+    std::cout << node->data << " ";
+    this->printPreorder(node->left);
+    this->printPreorder(node->right);
+}
+
+void BST::printInOrder(Node* node) const {
+    if (!node) return;
+
+    this->printInOrder(node->left);             
+    std::cout << node->data << " ";      
+    this->printInOrder(node->right);           
+}
+
+void BST::printPostorder(Node* node) const {
+    if (!node) return;
+
+    this->printPostorder(node->left);
+    this->printPostorder(node->right);
+    std::cout << node->data << " ";      
+}
+
+void BST::printLevelOrder(Node* node) const {
+
+    // Same as bfs
+    std::queue<Node*> q;
+    q.push(node);
+
+    while (!q.empty()) {
+
+
+        Node* currNode = q.front();
+        q.pop();
+
+        std::cout << currNode->data << " ";
+
+        if (currNode->left) q.push(currNode->left);
+        if (currNode->right) q.push(currNode->right);
+    }
+}
+
 void BST::printTraversal(BST::TRAVERSAL traverseOption) const {
 
+    if (!this->root) {
+        std::cout << "BST is empty..." << std::endl;
+        return;
+    }
+
+    switch(traverseOption) {
+        case BST::TRAVERSAL::PREORDER:
+            this->printPreorder(this->root);
+            break;
+        case BST::TRAVERSAL::INORDER:
+            this->printInOrder(this->root);
+            break;
+        case BST::TRAVERSAL::POSTORDER:
+            this->printPostorder(this->root);
+            break;
+        case BST::TRAVERSAL::LEVEL_ORDER:
+            this->printLevelOrder(this->root);
+            break;
+        default:
+            std::cout << "Have not yet implemneted this traversal method..." << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 
 
 
+void BST::printBST(const std::string& prefix, const Node* node, bool isLeft) const {
+    if( node != nullptr ) {
+        std::cout << prefix;
+
+        std::cout << (isLeft ? "├──" : "└──" );
+
+        // print the value of the node
+        std::cout << "[" << node->data << "]"<< std::endl;
+
+        // enter the next tree level - left and right branch
+        printBST( prefix + (isLeft ? "│   " : "    "), node->left, true);
+        printBST( prefix + (isLeft ? "│   " : "    "), node->right, false);
+    }
+}
+
+
+void BST::printBST() const {
+    if (!this->root) {
+        std::cout << "BST is Empty..." << std::endl;
+        return;
+    }
+    printBST("", this->root, false);
+}
+
+void BST::emptyTree() {
+    this->deleteTree(this->root);
+    this->root = nullptr;
+}
