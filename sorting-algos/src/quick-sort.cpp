@@ -1,8 +1,6 @@
 
 #include "quick-sort.h"
 
-
-
 void swap(std::vector<double>& arr, int idx1, int idx2) {
     if (idx1 == idx2) return;
     double tmp = arr[idx1];
@@ -11,11 +9,11 @@ void swap(std::vector<double>& arr, int idx1, int idx2) {
 }
 
 int partition(std::vector<double>& arr, int lo, int hi) {
-    int pivot = hi; 
-    int leftWall = lo; 
-    int i = lo; 
-    while (i <= hi) { 
-        if (arr[i] < arr[pivot]) { 
+    int pivot = hi;
+    int leftWall = lo;
+    int i = lo;
+    while (i <= hi) {
+        if (arr[i] < arr[pivot]) {
             swap(arr, i, leftWall);
             leftWall++;
         }
@@ -42,14 +40,12 @@ void quickSort2(std::vector<double>& arr, int lo, int hi) {
 }
 
 int partition2(std::vector<double>& arr, int lo, int hi) {
-
     int pivotVal = arr[lo];
 
     int left = lo + 1;
     int right = hi;
 
     while (1) {
-
         while (left <= right && arr[left] < pivotVal) {
             left++;
         }
@@ -61,7 +57,7 @@ int partition2(std::vector<double>& arr, int lo, int hi) {
         if (left > right) {
             break;
         }
-        
+
         swap(arr, left, right);
         left++;
         right--;
@@ -69,16 +65,3 @@ int partition2(std::vector<double>& arr, int lo, int hi) {
     swap(arr, lo, right);
     return right;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
